@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pagina principal</title>
+    <meta charset="utf-8">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='estilo.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='node_modules/bootstrap/dist/css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='sidemenu.css') }}">
+
+    
+</head>
+<body>
+{% if current_user.is_authenticated %}
+<title>Hello, world!</title>
+  </head>
+  <body>
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Tom Barbearia</h3>
+                <a>Bem vindo {{ current_user.nome }}</a>
+                <br>
+                <a style ="color:red" href = "{{ url_for('logout') }} ">Sair</a>
+            </div>
+
+            <ul class="list-unstyled components">
+                <li>
+                  <a href="{{ url_for('home') }}">Dashboard</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('financeiro') }}">Financeiro</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('agenda') }}">Agenda</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('clientes') }}">Clientes</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('servicos') }}">Serviços</a>
+                </li>
+            </ul>   
+        </nav>
+        
+        <div id="content">
+            <div class="container-fluid">
+
+
+                <div>
+                        <h3><label style="color:white">Balanço Financeiro</label></br></h3>
+                        
+                        <form class="d-flex" action = "" method = "post">
+                          <div class="col form-group">
+                            <select class="comboboxTipoPesquisa form-select-md" aria-label=".form-select-lg example" id ="comboboxTipoPesquisaFinanceiro" name="comboboxTipoPesquisaFinanceiro" style="height:40px;">
+                              <option value="1">igual a</option>
+                              <option value="2">entre</option>
+                            </select>
+                          </div>&nbsp&nbsp
+                            <input type="date" class="form-control" id="dataPesquisa" name="dataPesquisa" style="height:40px;"> &nbsp&nbsp
+                            <input type="date" class="form-control" id="dataPesquisa2" name="dataPesquisa2">&nbsp&nbsp
+                            <button type="submit" class="btn btn-warning" id="btnFinanceiroPesquisar" value ="btnFinanceiroPesquisar" style="height:40px;">Pesquisar</button>
+                        </form>
+                </div>
+                    
+                    <div class="d-grid gap-2 d-md-block"></br>
+
+            </div>
+        </div> 
+
+
+        <div class="container-fluid">
+            <table class="table table-light table-striped table-hover text-center">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Descrição do Serviço</th>
+                  <th scope="col">Horário</th>
+                  <th scope="col">Data</th>
+                  <th scope="col">Cliente</th>
+                  <th scope="col">Valor</th>
+
+                </tr>
+              </thead>
+              {% for pesquisaData in pesquisasDatas %}
+                <tbody>
+                  <tr>
+                    <th scope="row">{{ pesquisaData[0].id_servico_agendado }}</th>
+                    <td>{{ pesquisaData[0].desc_servico }}</td>
+                    <td>{{ pesquisaData[0].horario_agendado }}</td>
+                    <td>{{ pesquisaData[0].data_agendamento }}</td>
+                    <td>{{ pesquisaData[0].nm_cliente }}</td>
+                    <td>R$ {{ pesquisaData[1].preco }},00</td>
+                  </tr>
+                </tbody>
+              {% endfor %}
+              
+            </table>
+          </div>  
+          <p align="Right" class="financeiroTotal"> Total: R$ {{ total }},00    </center> </p>
+
+        {% else %}
+        <div>
+            <h1>Visitante</h1>
+            <p>Bem Vindo, faça login para poder acessar o menu.</p>
+            <a href="{{ url_for('login') }}"><button class="btn btn-dark" type="button" value ="login">Login</button></a>
+        </div>
+        {% endif %}
+        <script src="{{ url_for('static',filename='node_modules/popper.js/dist/umd/popper.js') }}"></script>             
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='estilo.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='node_modules/bootstrap/dist/css/bootstrap.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='sidemenu.css') }}">
+        <script src="{{ url_for('static',filename='node_modules/jquery/dist/jquery.js') }}"></script>
+        <script src="{{ url_for('static',filename='node_modules/jquery/dist/jquerymask/src/jquery.mask.js') }}"></script>
+        <script src="{{ url_for('static',filename='node_modules/jquery/dist/main.js') }}"></script>
+  </body>
+</html>

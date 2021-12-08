@@ -1,0 +1,114 @@
+
+  <!DOCTYPE html>
+  <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='node_modules/bootstrap/dist/css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='sidemenu.css') }}">
+    <title>Dashboard</title>
+  </head>
+  <body>
+    {% if current_user.is_authenticated %}
+    <div class="wrapper">
+      <!-- Sidebar  -->
+      <nav id="sidebar">
+        <div class="sidebar-header">
+          <h3>Tom Barbearia</h3>
+          <a>Bem vindo {{ current_user.nome }} </a><br>
+          <a style ="color:red" href = "{{ url_for('logout') }} ">Sair</a>
+        </div>
+
+        <ul class="list-unstyled components">
+          <li>
+            <a href="{{ url_for('home') }}">Dashboard</a>
+          </li>
+          <li>
+            <a href="{{ url_for('financeiro') }}">Financeiro</a>
+          </li>
+          <li>
+            <a href="{{ url_for('agenda') }}">Agenda</a>
+          </li>
+          <li>
+            <a href="{{ url_for('clientes') }}">Clientes</a>
+          </li>
+          <li>
+            <a href="{{ url_for('servicos') }}">Serviços</a>
+          </li>
+        </ul>  
+      </nav>
+      <!-- Contúdo da página  -->
+      <div id="content">
+        <div class="container-fluid"> 
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="card text-white bg-danger mb-3" style="width:650px;">
+              <div class="card-body" >
+                <h5 class="card-title">Próximos clientes</h5>
+                <table class="table table-light table-striped table-hover text-center" >
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Descrição do Serviço</th>
+                      <th scope="col">Data</th>
+                      <th scope="col">Horário</th>
+                      <th scope="col">Cliente</th>
+                    </tr>
+                  </thead>
+                  {% for servicoagendado in servicosagendados %}
+                  <tbody>
+                    <tr>
+                      <th scope="row">{{ servicoagendado.id_servico_agendado }}</th>
+                      <td>{{ servicoagendado.desc_servico }}</td>
+                      <td>{{ servicoagendado.data_agendamento }}</td>
+                      <td>{{ servicoagendado.horario_agendado }}</td>
+                      <td>{{ servicoagendado.nm_cliente }}</td>
+                    </tr>
+                  </tbody>
+                  {% endfor %}
+                </table>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6" align="Right">
+            <div class="card text-white bg-primary mb-3" style="width:400px;" >
+              <div class="card-body">
+                <h5 class="card-title" align="Left">Faturamento do dia</h5>
+                <table class="table table-light">
+                  <thead>
+                    <tr>
+                      <th scope="col">Valor Total</th>
+                      <th scope="col">Ultima Atualização</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>R$ {{ total }},00</td>
+                      <td>{{ ultimaAtualizacao }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div> 
+    </div>
+    {% else %}
+            <div>
+                <h1>Visitante</h1>
+                <p>Bem Vindo, faça login para poder acessar o menu.</p>
+                <a href="{{ url_for('login') }}"><button class="btn btn-dark" type="button" value ="login">Login</button></a>
+            </div>
+    {% endif %}
+    <script src="{{ url_for('static',filename='node_modules/popper.js/dist/umd/popper.js') }}"></script>
+    <script src="{{ url_for('static',filename='node_modules/jquery/dist/jquery.js') }}"></script>
+    <script src="{{ url_for('static',filename='node_modules/jquery/dist/main.js') }}"></script>
+    <script src="{{ url_for('static',filename='node_modules/jquery/dist/jquerymask/src/jquery.mask.js') }}"></script>
+  </body>
+  </html>

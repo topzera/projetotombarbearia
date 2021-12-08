@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='node_modules/bootstrap/dist/css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='sidemenu.css') }}">    
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
+    <title>Agendamento</title>
+</head>
+<body>
+  {% if current_user.is_authenticated %}
+  <div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <h3>Tom Barbearia</h3>
+        <a>Bem vindo {{ current_user.nome }}</a>
+        <br>
+        <a style ="color:red" href = "{{ url_for('logout') }} ">Sair</a>
+      </div>
+
+      <ul class="list-unstyled components">
+        <li>
+          <a href="{{ url_for('home') }}">Dashboard</a>
+        </li>
+        <li>
+          <a href="{{ url_for('financeiro') }}">Financeiro</a>
+        </li>
+        <li>
+          <a href="{{ url_for('agenda') }}">Agenda</a>
+        </li>
+        <li>
+          <a href="{{ url_for('clientes') }}">Clientes</a>
+        </li>
+        <li>
+          <a href="{{ url_for('servicos') }}">Serviços</a>
+        </li>
+      </ul>  
+    </nav>
+    <!-- Contúdo da página  -->
+    <div id="content">
+      <div class="container-fluid"> 
+
+        <form method="POST">
+          <div class="card text-center">
+            <div class="card-header">
+              <h5>
+                Agendamento
+            </h5>
+            </div>
+            <div class="card-body">
+              <p class="card-text"></p>
+
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+
+
+                    <div class="row mb-3">
+                      <label for="nome" class="col-sm-2 col-form-label">Nome</label>
+                      <div class="col-sm-10">
+                        <select class="form-select" name="nome-cliente">
+                          <option>Clientes</option>
+                          {% for cliente in clientes %}
+                            <option  value={{ cliente.id_cliente }}>{{ cliente.nome }} - CPF: {{ cliente.cpf }}</option>  
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+
+                    </div>                  
+                  </div>
+                  
+                  <div class="col">
+                    <div class="row mb-3">
+                      <label for="data" class="col-sm-2 col-form-label">Data</label>
+                      <div class="col-sm-10">
+                        <input type="date" class="form-control" id="date_picker" name="data">
+                        <script language="javascript">
+                          var today = new Date();
+                          var dd = String(today.getDate()).padStart(2, '0');
+                          var mm = String(today.getMonth() + 1).padStart(2, '0');
+                          var yyyy = today.getFullYear();
+        
+                          today = yyyy + '-' + mm + '-' + dd;
+                          $('#date_picker').attr('min',today);
+                        </script>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="horario" class="col-sm-2 col-form-label">Horário</label>
+                      <div class="col-sm-10">
+                        <input type="time" class="form-control" id="horario" name="horario">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="servico" class="col-sm-2 col-form-label">Serviço</label>
+                      <div class="col-sm-10">
+                        <select class="form-select" name="servicoagendado">
+                          <option>Serviços</option>
+                          {% for servico in servicos %}
+                            <option  value={{ servico.id_servicos }}>{{ servico.nome }} - R${{ servico.preco }},00</option>  
+                          {% endfor %}
+                        </select>
+                      </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row justify-content-center">
+                <div class="col-4">
+                  <button type="submit" class="btn btn-dark btn-md" value="cadastrar">Cadastar</button>
+                  <a href="{{url_for('agenda')}}"><button type="button" class="btn btn-danger btn-md">Cancelar</button></a>
+                </div>
+              </div>
+            </div>
+        </form>
+
+      </div>
+    </div> 
+  </div>
+  {% else %}
+  <div>
+      <h1>Visitante</h1>
+      <p>Bem Vindo, faça login para poder acessar o menu.</p>
+      <a href="{{ url_for('login') }}"><button class="btn btn-dark" type="button" value ="login">Login</button></a>
+  </div>
+  {% endif %}
+  <script src="{{ url_for('static',filename='node_modules/popper.js/dist/umd/popper.js') }}"></script>    
+  <script src="{{ url_for('static',filename='node_modules/jquery/dist/jquery.js') }}"></script>
+  <script src="{{ url_for('static',filename='node_modules/jquery/dist/main.js') }}"></script>
+  <script src="{{ url_for('static',filename='node_modules/jquery/dist/jquerymask/src/jquery.mask.js') }}"></script>
+</body>
+</html>

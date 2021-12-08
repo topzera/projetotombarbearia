@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='node_modules/bootstrap/dist/css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='sidemenu.css') }}">
+    <title>Document</title>
+</head>
+<body>
+    {% if current_user.is_authenticated %}
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Tom Barbearia</h3>
+                <a>Bem vindo {{ current_user.nome }}</a>
+                <br>
+                <a style ="color:red" href = "{{ url_for('logout') }} ">Sair</a>
+            </div>
+    
+            <ul class="list-unstyled components">
+                <li>
+                  <a href="{{ url_for('home') }}">Dashboard</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('financeiro') }}">Financeiro</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('agenda') }}">Agenda</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('clientes') }}">Clientes</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('servicos') }}">Serviços</a>
+                </li>
+            </ul>  
+        </nav>
+    
+        <!-- Page Content  -->
+        <div id="content">
+            <div class="container-fluid"> 
+    
+                <div class="d-grid gap-2 col-3 mx-auto">
+                    <a href="{{ url_for('agendamento') }}">
+                        <button type="submit button" class="btn btn-light btn-lg">Agendar Cliente</button>
+                    </a>
+                </div><br><br><br>
+                <form class="d-flex" action = "" method = "post">
+                  <input type="date" class="form-control" id="dataPesquisa" name="dataPesquisa"> &nbsp&nbsp
+                  <button type="submit" class="btn btn-warning" id="btnFinanceiroPesquisar" value ="btnFinanceiroPesquisar">Pesquisar</button>
+                </form><br>
+
+                <div class="card bg-dark text-white text-center">
+                  <div class="card-header">
+                    <h5>Agenda de Horários</h5>
+                  </div>
+                  <div class="card-body">
+                    
+                    <table class="table table-light table-striped table-hover text-center">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Descrição do Serviço</th>
+                          <th scope="col">Data</th>
+                          <th scope="col">Horário</th>
+                          <th scope="col">Nome</th>
+                          <th scope="col">Nº do Cliente</th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      {% for servicoagendado in servicosagendados %}
+                      <tbody>
+                        <tr>
+                          <th scope="row">{{ servicoagendado.id_servico_agendado }}</th>
+                          <td>{{ servicoagendado.desc_servico }}</td>
+                          <td>{{ servicoagendado.data_agendamento }}</td>
+                          <td>{{ servicoagendado.horario_agendado }}</td>
+                          <td>{{ servicoagendado.nm_cliente }}</td>
+                          <td>{{ servicoagendado.fk_id_cliente }}</td>
+                          <td><a class="btn btn-success" id="btnAtualizar" href="/statusAgendamento/{{ servicoagendado.id_servico_agendado }}">Status</a></td>
+                        </tr>
+                      </tbody>
+                      {% endfor %}
+                    </table>
+
+                  </div>
+                </div><br><br>
+
+                <div class="card bg-dark text-white text-center">
+                  <div class="card-header">
+                    <h5>Serviços Concluídos</h5>
+                  </div>
+                  <div class="card-body">
+                    
+                    <table class="table table-light table-striped table-hover text-center">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Descrição do Serviço</th>
+                          <th scope="col">Data</th>
+                          <th scope="col">Horário</th>
+                          <th scope="col">Nome</th>
+                          <th scope="col">Nº do Cliente</th>
+                        </tr>
+                      </thead>
+                      {% for servicoconcluido in servicosconcluidos %}
+                      <tbody>
+                        <tr>
+                          <th scope="row">{{ servicoconcluido.id_servico_agendado }}</th>
+                          <td>{{ servicoconcluido.desc_servico }}</td>
+                          <td>{{ servicoconcluido.data_agendamento }}</td>
+                          <td>{{ servicoconcluido.horario_agendado }}</td>
+                          <td>{{ servicoconcluido.nm_cliente }}</td>
+                          <td>{{ servicoconcluido.fk_id_cliente }}</td>
+                        </tr>
+                      </tbody>
+                      {% endfor %}
+                    </table>
+
+                  </div>
+                </div><br><br>
+
+                <div class="card bg-dark text-white text-center">
+                  <div class="card-header">
+                    <h5>Serviços Cancelados</h5>
+                  </div>
+                  <div class="card-body">
+                    
+                    <table class="table table-light table-striped table-hover text-center">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Descrição do Serviço</th>
+                          <th scope="col">Data</th>
+                          <th scope="col">Horário</th>
+                          <th scope="col">Nome</th>
+                          <th scope="col">Nº do Cliente</th>
+                        </tr>
+                      </thead>
+                      {% for servicocancelado in servicoscancelados %}
+                      <tbody>
+                        <tr>
+                          <th scope="row">{{ servicocancelado.id_servico_agendado }}</th>
+                          <td>{{ servicocancelado.desc_servico }}</td>
+                          <td>{{ servicocancelado.data_agendamento }}</td>
+                          <td>{{ servicocancelado.horario_agendado }}</td>
+                          <td>{{ servicocancelado.nm_cliente }}</td>
+                          <td>{{ servicocancelado.fk_id_cliente }}</td>
+                        </tr>
+                      </tbody>
+                      {% endfor %}
+                    </table>
+
+                  </div>
+                </div><br><br>
+
+
+                  
+            </div>
+        </div> 
+    </div>
+
+
+    {% else %}
+    <div>
+        <h1>Visitante</h1>
+        <p>Bem Vindo, faça login para poder acessar o menu.</p>
+        <a href="{{ url_for('login') }}"><button class="btn btn-dark" type="button" value ="login">Login</button></a>
+    </div>
+    {% endif %}
+
+    
+  
+    
+    <script src="{{ url_for('static',filename='node_modules/popper.js/dist/umd/popper.js') }}"></script>
+    <script src="{{ url_for('static',filename='node_modules/jquery/dist/jquery.js') }}"></script>
+    <script src="{{ url_for('static',filename='node_modules/jquery/dist/main.js') }}"></script>
+    <script src="{{ url_for('static',filename='node_modules/jquery/dist/jquerymask/src/jquery.mask.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pagina principal</title>
+    <meta charset="utf-8">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='estilo.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='node_modules/bootstrap/dist/css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='sidemenu.css') }}">
+
+    
+
+</head>
+<body>
+{% if current_user.is_authenticated %}
+<title>Hello, world!</title>
+  </head>
+  <body>
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Tom Barbearia</h3>
+                <a>Bem vindo {{ current_user.nome }}</a>
+                <br>
+                <a style ="color:red" href = "{{ url_for('logout') }} ">Sair</a>
+            </div>
+
+            <ul class="list-unstyled components">
+                <li>
+                  <a href="{{ url_for('home') }}">Dashboard</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('financeiro') }}">Financeiro</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('agenda') }}">Agenda</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('clientes') }}">Clientes</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('servicos') }}">Serviços</a>
+                </li>
+            </ul>   
+        </nav>
+        <div id="content">
+        <div class="container-fluid"> </div>
+
+
+        <div id="content">
+            <div class="container-fluid"> 
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="card text-center">
+                      <div class="card-body">
+                        <h5 class="card-title">Cadastro de cliente</h5>
+                        <form action = "/clientes" method = "post">
+              
+                          <div class="row mb-3">
+                            <label for="nome" class="col-sm-2 col-form-label">Nome</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" name ="nome_cliente" id="nome_cliente">
+                            </div>
+                          </div>
+                          <div class="row mb-3">
+                            <small style="font-size: 12px" class = "alerta">{{ erro }}</small>
+                            <label for="cpf" class="col-sm-2 col-form-label">CPF</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control " name ="cpf_cliente" id="cpf_cliente">
+                            </div>
+                          </div>
+                          <div class="row mb-3">
+                              <label for="telefone" class="col-sm-2 col-form-label">Tel</label>
+                              <div class="col-sm-10">
+                                <input type="text" class="form-control telefone" name = "telefone_cliente" id="telefone_cliente">
+                              </div>
+                            </div>
+                            <button type="submit" class="btn btn-dark btn-lg" id="btnCadastrar" value ="Cadastrar">Cadastrar</button>
+                            <button type="button" id = "btnCancelarCliente" class="btn btn-danger btn-lg">Cancelar</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div><br>
+
+              <div class="container-fluid">
+                <form class="d-flex" action = "/pesquisaCliente" method = "post">
+                  <div class="row" form-group>
+                    <div class="col form-group">
+                      <select class="comboboxTipoPesquisa form-select-md" aria-label=".form-select-lg example" id ="comboboxCliente" name="comboboxCliente">
+                        <option value="1">igual a</option>
+                        <option value="2">contém</option>
+                      </select>
+                    </div>
+                    <div class="col">
+                        <input class="imputPesquisaCliente me-2" type="search" placeholder="Pesquise um nome de cliente" aria-label="Search" id ="nomeClientePesquisa" name="nomeClientePesquisa">
+                    </div>
+                    <div class="col">
+                      <button class="btn btn-warning" type="submit" >Pesquisar</button>
+                    </div>
+                  </div>
+                </form>
+                <br>
+                <table class="table table-light table-striped table-hover text-center">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Nome</th>
+                      <th scope="col">CPF</th>
+                      <th scope="col">Telefone</th>
+                      <th scope="col">Editar</th>
+                      <th scope="col">Excluir</th>
+                    </tr>
+                  </thead>
+                  {% for cliente in clientes %}
+                  <tbody>
+                    <tr>
+                      <th scope="row">{{ cliente.id_cliente }}</th>
+                      <td>{{ cliente.nome }}</td>
+                      <td>{{ cliente.cpf }}</td>
+                      <td>{{ cliente.telefone }}</td>
+                      <td><a class="btn btn-success" id="btnAtualizar" href="/atualizarCliente/{{ cliente.id_cliente }}">Editar</a></td>
+                      <td><a class="btn btn-dark" id="btnExcluir" href="/excluircliente/{{ cliente.id_cliente }}">Excluir</a></td>
+                        <i class="bi bi-pencil-square"></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                  {% endfor %}
+                </table>
+              </div>
+      
+            </div>
+
+        
+
+        {% else %}
+            <div>
+                <h1>Visitante</h1>
+                <p>Bem Vindo, faça login para poder acessar o menu.</p>
+                <a href="{{ url_for('login') }}"><button class="btn btn-dark" type="button" value ="login">Login</button></a>
+            </div>
+        {% endif %}
+
+
+
+
+
+
+        <script src="{{ url_for('static',filename='node_modules/popper.js/dist/umd/popper.js') }}"></script>             
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='estilo.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='node_modules/bootstrap/dist/css/bootstrap.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='sidemenu.css') }}">
+        <script src="{{ url_for('static',filename='node_modules/jquery/dist/jquery.js') }}"></script>
+        <script src="{{ url_for('static',filename='node_modules/jquery/dist/jquerymask/src/jquery.mask.js') }}"></script>
+        <script src="{{ url_for('static',filename='node_modules/jquery/dist/main.js') }}"></script>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Lista de Clientes</title>
+        
+    </head>
+    <body >
+        {% if current_user.is_authenticated %}
+        <h1 class="card-title">Lista de Clientes</h1>
+        <hr>
+        <div class="table-responsive">
+            <table class="table table-striped table-dark table-bordered table-hover" >
+                <thead class="thead-dark">
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Telefone</th>
+                    <th scope="col">Usuario</th>
+                    <th scope="col">Senha Criptografada</th>
+                    <th scope="col">Excluir</th>
+                    </tr>
+                </thead>
+            {% for pessoa in pessoas %}
+            
+            <tbody>
+                <tr>
+                    <th scope="row">{{ pessoa.id }}</th>
+                    <td>{{ pessoa.nome }}</td>
+                    <td>{{ pessoa.telefone }}</td>
+                    <td>{{ pessoa.usuario }}</td>
+                    <td>{{ pessoa.senha }}</td>
+                    <td><a class="btn btn-light" id="btnExcluir" href="/excluir/{{pessoa.id}}">Excluir</a> </td>    
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <a href="{{ url_for('home') }}"><button class="btn btn-dark" type="button" value ="login">Voltar</button></a>
+        {% else %}
+            <div>
+                <h1>Visitante</h1>
+                <p>Bem Vindo, faça login para poder acessar o menu.</p>
+                <a href="{{ url_for('login') }}"><button class="btn btn-dark" type="button" value ="login">Login</button></a>
+            </div>
+        {% endif %}
+       
+        
+
+        <script src="{{ url_for('static',filename='node_modules/popper.js/dist/umd/popper.js') }}"></script>             
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='estilo.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='node_modules/bootstrap/dist/css/bootstrap.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='sidemenu.css') }}">
+        <script src="{{ url_for('static',filename='node_modules/jquery/dist/jquery.js') }}"></script>
+        <script src="{{ url_for('static',filename='node_modules/jquery/dist/jquerymask/src/jquery.mask.js') }}"></script>
+        <script src="{{ url_for('static',filename='node_modules/jquery/dist/main.js') }}"></script>
+        
+    </body>
+
+</html>

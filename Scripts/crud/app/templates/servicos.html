@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='node_modules/bootstrap/dist/css/bootstrap.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='sidemenu.css') }}">
+  <title>Serviços</title>
+</head>
+<body>
+  {% if current_user.is_authenticated %}
+  <div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <h3>Tom Barbearia</h3>
+        <a>Bem vindo {{ current_user.nome }}</a>
+        <br>
+        <a style ="color:red" href = "{{ url_for('logout') }} ">Sair</a>
+      </div>
+
+      <ul class="list-unstyled components">
+        <li>
+          <a href="{{ url_for('home') }}">Dashboard</a>
+        </li>
+        <li>
+          <a href="{{ url_for('financeiro') }}">Financeiro</a>
+        </li>
+        <li>
+          <a href="{{ url_for('agenda') }}">Agenda</a>
+        </li>
+        <li>
+          <a href="{{ url_for('clientes') }}">Clientes</a>
+        </li>
+        <li>
+          <a href="{{ url_for('servicos') }}">Serviços</a>
+        </li>
+      </ul>  
+    </nav>
+    <!-- Contúdo da página  -->
+    <div id="content">
+      <div class="container-fluid">
+        <!--Card 1 e Card 2  -->
+        <div class="row">
+          <!-- Card 1 -->
+          <div class="col-sm-6">
+            <div class="card text-center">
+              <div class="card-body">
+                <h5 class="card-title">Cadastrar um novo serviço</h5>
+                <form action = "" method = "post">
+                  <div class="row mb-3">
+                      <label for="nome-serv" class="col-sm-2 col-form-label">Serviço</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="servico" name="servico">
+                      </div>
+                  </div>
+                  <div class="row mb-3">
+                      <label for="valor-serv" class="col-sm-2 col-form-label">Valor</label>
+                      <div class="col-sm-10">
+                        <input type="number" class="form-control" id="preco" name="preco">
+                      </div>
+                  </div>                    
+                  <button type="submit" class="btn btn-dark" id="btnCadastrar" value ="Cadastrar">Cadastrar</button>
+                  <button type="button" id = "btnCancelarServico" class="btn btn-danger ">Cancelar</button>
+                </form>
+        
+              </div>
+            </div>
+          </div>
+          <!-- Card 2  -->
+          <div class="col-sm-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Serviços Cadastrados</h5>
+                <table class="table table-hover table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Serviço</th>
+                      <th scope="col">Valor</th>
+                      <th scope="col">Editar</th>
+                      <th scope="col">Excluir</th>
+                    </tr>
+                  </thead>
+                  {% for servico in servicos %}
+                  <tbody>
+                    <tr>
+                      <th scope="row">{{ servico.id_servicos }}</th>
+                      <td>{{ servico.nome }}</td>
+                      <td>R$ {{ servico.preco }},00</td>
+                      <td><a class="btn btn-success" id="btnAtualizar" href="/atualizarServicos/{{ servico.id_servicos }}">Editar</a></td>
+                      <td><a class="btn btn-dark" id="btnExcluir" href="/excluirservico/{{ servico.id_servicos }}">Excluir</a></td>
+                      
+                    </tr>
+                  </tbody>
+                  {% endfor %}
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> 
+    </div> 
+  </div>
+  {% else %}
+            <div>
+                <h1>Visitante</h1>
+                <p>Bem Vindo, faça login para poder acessar o menu.</p>
+                <a href="{{ url_for('login') }}"><button class="btn btn-dark" type="button" value ="login">Login</button></a>
+            </div>
+  {% endif %}
+
+    <script src="{{ url_for('static',filename='node_modules/popper.js/dist/umd/popper.js') }}"></script> 
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='estilo.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='node_modules/bootstrap/dist/css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='sidemenu.css') }}">
+    <script src="{{ url_for('static',filename='node_modules/jquery/dist/jquery.js') }}"></script>
+    <script src="{{ url_for('static',filename='node_modules/jquery/dist/jquerymask/src/jquery.mask.js') }}"></script>
+    <script src="{{ url_for('static',filename='node_modules/jquery/dist/main.js') }}"></script>
+</body>
+</html>

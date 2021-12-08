@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pagina principal</title>
+    <meta charset="utf-8">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='estilo.css') }}">
+
+</head>
+
+<body >
+
+    <div>
+
+        <form class="form"  action = "" method = "post">
+            <div class="primeiro">
+                <div class="titulo-top" >
+                    <h2 class="texto-login">Faça seu Cadastro</h2>
+                </div>
+
+    
+                <div class="grupo1-cadastro">
+                
+                    <label>Nome</label>
+                    <input type="text" placeholder="Digite seu nome" name ="nome" >
+                    <label>Telefone</label>
+                    <input type="text" class = "telefone" placeholder="Digite seu telefone" name="telefone" >
+                    <label>Usuário</label>
+                    <input type="text" placeholder="Usuário" name="usuario">
+                    <label>Senha</label>
+                    <input type="password" placeholder="Senha"name ="senha">
+
+                </div>
+
+                
+                
+            
+                <div class="grupo4-cadastro">
+                    <button type="submit" id="btnCadastrar" value ="Cadastrar">CADASTRAR</button><br><br>
+                    <a href="{{ url_for('login') }}"><button type="button" class="button-login" value ="login">Login</button></a>
+                </div>  
+                
+            </div>
+        </form>
+    </div>
+
+    <script src="{{ url_for('static',filename='node_modules/popper.js/dist/umd/popper.js') }}"></script>             
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='estilo.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='node_modules/bootstrap/dist/css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='sidemenu.css') }}">
+    <script src="{{ url_for('static',filename='node_modules/jquery/dist/jquery.js') }}"></script>
+    <script src="{{ url_for('static',filename='node_modules/jquery/dist/jquerymask/src/jquery.mask.js') }}"></script>
+    <script src="{{ url_for('static',filename='node_modules/jquery/dist/main.js') }}"></script>
+
+
+
+
+
+
+
+</body>
