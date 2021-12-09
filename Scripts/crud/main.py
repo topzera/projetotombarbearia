@@ -9,6 +9,11 @@ from app import app, db
 from app.models import User , Servicos, Clientes, ServicosAgendados, StatusAgendamento
 from random import randint
 from sqlalchemy.sql import functions
+import os
+
+if __name__== 'main':
+    port = int(os.getenv('PORT'), '5000')
+    app.run(host='0.0.0.0', port = port)
 
 
 @app.route("/cadastro", methods=['GET', 'POST'])
