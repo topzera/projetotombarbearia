@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='node_modules/bootstrap/dist/css/bootstrap.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='sidemenu.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js"></script>
+    <title>Chartjs</title>
     <title>Dashboard</title>
   </head>
   <body>
@@ -70,7 +72,7 @@
                   </tbody>
                   {% endfor %}
                 </table>
-
+                
               </div>
             </div>
           </div>
@@ -97,8 +99,184 @@
           </div>
         </div>
         
+        <div class="justify-content-center row graficor" align = "Center">
+          <div style="background-color: rgb(255, 255, 255); width: auto; height: auto;">
+          <canvas id="myChart" width="500" height="400"></canvas>
+          </div>
+        </div>
+
+        <div class="justify-content-center row graficor" align ="Center">
+          <h4 style="color:cadetblue">Serviços Concluídos</h4>
+          <div style="width: auto; height: auto;">
+          <canvas id="CONCLUIDOS" width="500" height="400"></canvas>
+          </div>
+
+        <div class="justify-content-center row graficor">
+          <h4 style="color:cadetblue">Serviços Cancelados</h4>
+          <div style="width: auto; height: auto;">
+          <canvas id="CANCELADOS" width="500" height="400"></canvas>
+        </div>
+
+        </div>
+        <script>
+          let chart = new Chart(document.getElementById("myChart"), {
+              type: "bar",
+              data: {
+                  labels:["Jan", "Fev", "Mar", "Apr", "May", "Jun","Jul","Ago","Set","Out","Nov","Dez"],
+                  datasets: [
+                      {
+                          label: "Serviços Agendados", title:'Serviços Agendados',
+                          data: [{{JanSEARCH}},{{FevSEARCH}},{{MarSEARCH}},{{AbrSEARCH}},{{MaiSEARCH}},{{JunSEARCH}},{{JulSEARCH}},{{AgoSEARCH}},{{SetSEARCH}},{{OutSEARCH}},{{NovSEARCH}},{{DezSEARCH}}],
+                          backgroundColor: [
+                              'rgba(255, 99, 132, 0.3)',
+                              'rgba(54, 162, 235, 0.3)',
+                              'rgba(255, 206, 86, 0.3)',
+                              'rgba(75, 192, 192, 0.3)',
+                              'rgba(153, 102, 255, 0.3)',
+                              'rgba(255, 159, 64, 0.3)',
+                              'rgba(105, 17, 332, 0.3)',
+                              'rgba(42, 200, 305, 0.3)',
+                              'rgba(5, 206, 86, 0.3)',
+                              'rgba(100, 22, 52, 0.3)',
+                              'rgba(253, 12, 35, 0.3)',
+                              'rgba(205, 19, 124, 0.3)'
+                          ],
+                          borderColor: [
+                              'rgba(255, 99, 132, 1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                              'rgba(75, 192, 192, 1)',
+                              'rgba(153, 102, 255, 1)',
+                              'rgba(255, 159, 64, 1)',
+                              'rgba(105, 17, 332, 1)',
+                              'rgba(42, 200, 305, 1)',
+                              'rgba(5, 206, 86, 1)',
+                              'rgba(100, 22, 52, 1)',
+                              'rgba(253, 12, 35, 1)',
+                              'rgba(205, 19, 124, 1)'
+                          ],
+                          borderWidth: 3
+                      }
+                  ]
+              },
+              options: {
+                  
+                  title: {
+                      display: true,
+                      text:"Novos Clientes"
+                  },
+                  scales: {
+                      yAxes: [
+                          {
+                              ticks:{
+                                  beginAtZero: true
+                              }
+                          }
+                      ]
+                  }
+              }
+          })
+
+        // AAAAAAAAAAAAAAAAAA SOCOROOOOOOOOO
+          
+        let CONCLUIDOS = new Chart(document.getElementById("CONCLUIDOS"), {
+              type: "doughnut",
+              data: {
+                  labels:["Cabelo","Barba","Tintura","Luzes","Sobrancelha","Penteado"],
+                  datasets: [
+                      {
+                          label: "Serviços Agendados", title:'Serviços Agendados',
+                          data: [{{CabeloSearch}},{{BarbaSearch}},{{TinturaSearch}},{{LuzesSearch}},{{SombrancelhaSearch}},{{PenteadoSearch}}],
+                          backgroundColor: [
+                              'rgba(255, 99, 132, 1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                              'rgba(75, 192, 192, 1)',
+                              'rgba(153, 102, 255, 1)',
+                              'rgba(255, 159, 64, 1)',
+                              'rgba(105, 17, 332, 1)',
+                              'rgba(42, 200, 305, 1)',
+                              'rgba(5, 206, 86, 1)',
+                              'rgba(100, 22, 52, 1)',
+                              'rgba(253, 12, 35, 1)',
+                              'rgba(205, 19, 124, 1)'
+                          ]
+                      }
+                  ]
+              },
+              options: {
+                  
+                  title: {
+                      display: true,
+                      text:"Novos Clientes"
+                  },
+                  scales: {
+                      yAxes: [
+                          {
+                              ticks:{
+                                  beginAtZero: true
+                              }
+                          }
+                      ]
+                  }
+              }
+          })
+
+          // setup
+          let data ={
+            labels:["Cabelo","Barba","Tintura","Luzes","Sobrancelha","Penteado"],
+              datasets: [
+                  {
+                      label:'Serviços Cancelados', 
+                      title:'Serviços Cancelados',
+                      data: [{{CabeloCANCELADOSearch}},{{BarbaCANCELADOSearch}},{{TinturaCANCELADOSearch}},{{LuzesCANCELADOSearch}},{{SombrancelhaCANCELADOSearch}},{{PenteadoCANCELADOSearch}}],
+                      backgroundColor: [
+                          'rgba(255, 99, 132, 1)',
+                          'rgba(54, 162, 235, 1)',
+                          'rgba(255, 206, 86, 1)',
+                          'rgba(75, 192, 192, 1)',
+                          'rgba(153, 102, 255, 1)',
+                          'rgba(255, 159, 64, 1)',
+                          'rgba(105, 17, 332, 1)',
+                          'rgba(42, 200, 305, 1)',
+                          'rgba(5, 206, 86, 1)',
+                          'rgba(100, 22, 52, 1)',
+                          'rgba(253, 12, 35, 1)',
+                          'rgba(205, 19, 124, 1)'
+                      ]
+                  }
+              ]
+          }
+
+
+          // const 
+          let config ={
+            type: "doughnut",
+              data,
+              options: {
+                title: {
+                    display: true,
+                    text:"Novos Clientes"
+                },
+                scales: {
+                    yAxes: [
+                        {
+                            ticks:{
+                                beginAtZero: true
+                            }
+                        }
+                    ]
+                }
+            }
+          }
+
+          let CANCELADOS = new Chart(document.getElementById("CANCELADOS"), config);
+  
+      </script>
+
       </div> 
     </div>
+
     {% else %}
             <div>
                 <h1>Visitante</h1>

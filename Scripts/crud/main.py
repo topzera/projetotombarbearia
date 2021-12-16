@@ -4,6 +4,7 @@ from flask.helpers import total_seconds
 from flask_login import login_user, logout_user
 from datetime import date
 import datetime
+from sqlalchemy.sql.elements import and_
 from sqlalchemy.sql.operators import ilike_op
 from app import app, db
 from app.models import User , Servicos, Clientes, ServicosAgendados, StatusAgendamento
@@ -61,12 +62,70 @@ def logout():
 def home():
     ultimaAtualizacao=datetime.datetime.now().strftime('%d-%m-%Y as %H:%M:%S')
     queryTotal= db.session.query(ServicosAgendados, Servicos, functions.sum(Servicos.preco)).join(Servicos, ServicosAgendados.fk_id_servico == Servicos.id_servicos).filter(ServicosAgendados.data_agendamento == date.today()).filter(ServicosAgendados.status == 1).first()
+    
+    '''Quantidade de serviços por mês'''
+    JanSEARCH= db.session.query(ServicosAgendados).filter(ServicosAgendados.data_agendamento.between('2021-01-01','2021-01-31')).count()
+    FevSEARCH= db.session.query(ServicosAgendados).filter(ServicosAgendados.data_agendamento.between('2021-02-01','2021-02-29')).count()
+    MarSEARCH= db.session.query(ServicosAgendados).filter(ServicosAgendados.data_agendamento.between('2021-03-01','2021-03-31')).count()
+    AbrSEARCH= db.session.query(ServicosAgendados).filter(ServicosAgendados.data_agendamento.between('2021-04-01','2021-04-30')).count()
+    MaiSEARCH= db.session.query(ServicosAgendados).filter(ServicosAgendados.data_agendamento.between('2021-05-01','2021-05-31')).count()
+    JunSEARCH= db.session.query(ServicosAgendados).filter(ServicosAgendados.data_agendamento.between('2021-06-01','2021-06-30')).count()
+    JulSEARCH= db.session.query(ServicosAgendados).filter(ServicosAgendados.data_agendamento.between('2021-07-01','2021-07-31')).count()
+    AgoSEARCH= db.session.query(ServicosAgendados).filter(ServicosAgendados.data_agendamento.between('2021-08-01','2021-08-31')).count()
+    SetSEARCH= db.session.query(ServicosAgendados).filter(ServicosAgendados.data_agendamento.between('2021-09-01','2021-09-30')).count()
+    OutSEARCH= db.session.query(ServicosAgendados).filter(ServicosAgendados.data_agendamento.between('2021-10-01','2021-10-31')).count()
+    NovSEARCH= db.session.query(ServicosAgendados).filter(ServicosAgendados.data_agendamento.between('2021-11-01','2021-11-30')).count()
+    DezSEARCH= db.session.query(ServicosAgendados).filter(ServicosAgendados.data_agendamento.between('2021-12-01','2021-12-31')).count()
+    
+    '''Numero de vezes que um serviço foi requisitado'''
+    CabeloSearch = db.session.query(ServicosAgendados).filter(ServicosAgendados.fk_id_servico==1).filter(ServicosAgendados.status==1).count()
+    BarbaSearch = db.session.query(ServicosAgendados).filter(ServicosAgendados.fk_id_servico==2).filter(ServicosAgendados.status==1).count()
+    TinturaSearch = db.session.query(ServicosAgendados).filter(ServicosAgendados.fk_id_servico==3).filter(ServicosAgendados.status==1).count()
+    LuzesSearch = db.session.query(ServicosAgendados).filter(ServicosAgendados.fk_id_servico==5).filter(ServicosAgendados.status==1).count()
+    SombrancelhaSearch = db.session.query(ServicosAgendados).filter(ServicosAgendados.fk_id_servico==8).filter(ServicosAgendados.status==1).count()
+    PenteadoSearch = db.session.query(ServicosAgendados).filter(ServicosAgendados.fk_id_servico==10).filter(ServicosAgendados.status==1).count()
+
+    '''Numero de vezes que cada servico foi cancelado'''
+    CabeloCANCELADOSearch = db.session.query(ServicosAgendados).filter(ServicosAgendados.fk_id_servico==1).filter(ServicosAgendados.status==2).count()
+    BarbaCANCELADOSearch = db.session.query(ServicosAgendados).filter(ServicosAgendados.fk_id_servico==2).filter(ServicosAgendados.status==2).count()
+    TinturaCANCELADOSearch = db.session.query(ServicosAgendados).filter(ServicosAgendados.fk_id_servico==3).filter(ServicosAgendados.status==1).count()
+    LuzesCANCELADOSearch = db.session.query(ServicosAgendados).filter(ServicosAgendados.fk_id_servico==5).filter(ServicosAgendados.status==1).count()
+    SombrancelhaCANCELADOSearch = db.session.query(ServicosAgendados).filter(ServicosAgendados.fk_id_servico==8).filter(ServicosAgendados.status==1).count()
+    PenteadoCANCELADOSearch = db.session.query(ServicosAgendados).filter(ServicosAgendados.fk_id_servico==10).filter(ServicosAgendados.status==1).count()
+
     total = queryTotal[2]
     if total == None:
         total = 0
     
     servicosagendados = ServicosAgendados.query.filter_by(data_agendamento=date.today())
-    return render_template('home.html', servicosagendados=servicosagendados,ultimaAtualizacao=ultimaAtualizacao, total=total)
+    return render_template('home.html', servicosagendados=servicosagendados,ultimaAtualizacao=ultimaAtualizacao, total=total,
+                                                                                                                            JanSEARCH =JanSEARCH,
+                                                                                                                            FevSEARCH =FevSEARCH,
+                                                                                                                            MarSEARCH =MarSEARCH,
+                                                                                                                            AbrSEARCH =AbrSEARCH,
+                                                                                                                            MaiSEARCH =MaiSEARCH,
+                                                                                                                            JunSEARCH =JunSEARCH,
+                                                                                                                            JulSEARCH =JulSEARCH,
+                                                                                                                            AgoSEARCH =AgoSEARCH,
+                                                                                                                            SetSEARCH =SetSEARCH,
+                                                                                                                            OutSEARCH =OutSEARCH,
+                                                                                                                            NovSEARCH =NovSEARCH,
+                                                                                                                            DezSEARCH =DezSEARCH,
+
+                                                                                                                            CabeloSearch =CabeloSearch,
+                                                                                                                            BarbaSearch = BarbaSearch,
+                                                                                                                            TinturaSearch =TinturaSearch,
+                                                                                                                            LuzesSearch =LuzesSearch,
+                                                                                                                            SombrancelhaSearch =SombrancelhaSearch,
+                                                                                                                            PenteadoSearch =PenteadoSearch,
+
+                                                                                                                            CabeloCANCELADOSearch =CabeloCANCELADOSearch,
+                                                                                                                            BarbaCANCELADOSearch =BarbaCANCELADOSearch,
+                                                                                                                            TinturaCANCELADOSearch =TinturaCANCELADOSearch,
+                                                                                                                            LuzesCANCELADOSearch =LuzesCANCELADOSearch,
+                                                                                                                            SombrancelhaCANCELADOSearch =SombrancelhaCANCELADOSearch,
+                                                                                                                            PenteadoCANCELADOSearch =PenteadoCANCELADOSearch
+                                                                                                                            )
 
 
 @app.route("/lista")
